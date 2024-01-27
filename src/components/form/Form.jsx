@@ -1,32 +1,52 @@
 import { Formik } from "formik";
-const validateForm = (values) => {
-  console.log(values);
-};
+import { validateForm } from "./Validations";
+import { formInitialValues } from "./InitialValues";
+import { TextField, Button } from "@mui/material";
 
 export const Form = () => {
   return (
     <Formik
-      initialValues={{
-        name: "",
-        price: 5.0,
+      initialValues={formInitialValues}
+      onSubmit={(values) => {
+        // do all you want
+        // send it to the API
+        // you can store in another place
+        console.log(values, "saving the sate");
       }}
-      validate={validateForm}
+      validate={validateForm} // get a function
+      validateOnBlur={true} // boolean
+      validateOnChange={false} // boolean
     >
       {(props) => (
         <form>
-          <input
+          <TextField
+            required
+            label="Required"
+            variant="outlined"
             name="name"
-            placeholder="enter your name please"
+            placeholder="give me a name"
             value={props.values.name}
             onChange={props.handleChange}
-          />{" "}
+            onBlur={props.handleBlur}
+          />
+          {props.errors?.name && <span>{props.errors.name.message}</span>}
           <br />
-          <input
+          <TextField
+            variant="outlined"
             name="price"
-            placeholder="enter your price please"
+            placeholder="give me me a price"
             value={props.values.price}
             onChange={props.handleChange}
+            onBlur={props.handleBlur}
           />
+          <br />
+          <Button
+            variant="contained"
+            type="submit"
+            onClick={props.handleSubmit}
+          >
+            Save the Data
+          </Button>
         </form>
       )}
     </Formik>
